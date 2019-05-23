@@ -1,0 +1,5 @@
+{
+	"require": {
+		"mediawiki/chameleon-skin": "~2.0"
+	}
+}

@@ -32,6 +32,9 @@ RUN apt-get update && apt-get install -y libicu-dev g++ --no-install-recommends 
     apt-get install -y --auto-remove libicu57 g++ && \
     rm -rf /var/lib/apt/lists/*
 
+# Zip PHP extension
+RUN docker-php-ext-install zip
+
 # APC PHP extension
 RUN pecl install apcu && \
     pecl install apcu_bc-1.0.3 && \
@@ -69,6 +72,11 @@ RUN apt-key advanced --keyserver keys.gnupg.net --recv-keys 90E9F83F22250DD7 && 
     apt-get -y install parsoid --no-install-recommends
 COPY config/parsoid/config.yaml /usr/lib/parsoid/src/config.yaml
 ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
+
+# Composer
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && \
+    composer global require hirak/prestissimo
 
 # MediaWiki
 ARG MEDIAWIKI_VERSION_MAJOR=1
@@ -108,6 +116,9 @@ RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https:
 
 # Set work dir
 WORKDIR /var/www/mediawiki
+
+# Install composer dependencies
+RUN composer update "mediawiki/chameleon-skin"
 
 # Copy docker entry point script
 COPY docker-entrypoint.sh /docker-entrypoint.sh

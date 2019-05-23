@@ -218,5 +218,9 @@ wfLoadExtension('MobileFrontend');
 $wgMFAutodetectMobileView = true;
 $wgMFDefaultSkinClass = 'SkinMinerva';
 
+# Chameleon Skin
+wfLoadSkin('chameleon');
+$wgDefaultSkin = 'chameleon';
+
 # Load extra settings
 require 'ExtraLocalSettings.php';
