@@ -187,6 +187,9 @@ if (getenv('MEDIAWIKI_SMTP') == '1') {
     );
 }
 
+# MinervaNeue
+wfLoadSkin('MinervaNeue');
+
 # VisualEditor
 if (getenv('MEDIAWIKI_EXTENSION_VISUAL_EDITOR_ENABLED') == ''
 || getenv('MEDIAWIKI_EXTENSION_VISUAL_EDITOR_ENABLED') == '1') {
@@ -209,6 +212,11 @@ if (getenv('MEDIAWIKI_EXTENSION_USER_MERGE_ENABLED') == ''
     $wgGroupPermissions['sysop']['usermerge'] = true;
     $wgUserMergeProtectedGroups = array();
 }
+
+# MobileFrontend
+wfLoadExtension('MobileFrontend');
+$wgMFAutodetectMobileView = true;
+$wgMFDefaultSkinClass = 'SkinMinerva';
 
 # Load extra settings
 require 'ExtraLocalSettings.php';

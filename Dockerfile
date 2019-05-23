@@ -100,6 +100,12 @@ RUN curl -s -o /tmp/extension-usermerge.tar.gz https://extdist.wmflabs.org/dist/
     tar -xzf /tmp/extension-usermerge.tar.gz -C /var/www/mediawiki/extensions && \
     rm /tmp/extension-usermerge.tar.gz
 
+# MobileFrontend extension
+RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-extensions-MobileFrontend.git /var/www/mediawiki/extensions/MobileFrontend
+
+# MinervaNeue skin
+RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-skins-MinervaNeue.git /var/www/mediawiki/skins/MinervaNeue
+
 # Set work dir
 WORKDIR /var/www/mediawiki
 
