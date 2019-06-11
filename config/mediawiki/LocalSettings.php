@@ -100,7 +100,6 @@ $wgMemCachedServers = [];
 
 $wgUploadPath = '/images';
 $wgUploadDirectory = '/images';
-$wgUploadSizeWarning = false;
 
 if (getenv('MEDIAWIKI_MAX_UPLOAD_SIZE') != '') {
     // Since MediaWiki's config takes upload size in bytes and PHP in 100M format, lets use PHPs format and convert that here.
@@ -127,6 +126,8 @@ if (getenv('MEDIAWIKI_MAX_UPLOAD_SIZE') != '') {
         unset($maxUploadSizeUnit, $maxUploadSizeValue, $maxUploadSizeFactor);
     }
 }
+
+$wgUploadSizeWarning = $wgMaxUploadSize;
 
 $wgEnableUploads = false;
 if (getenv('MEDIAWIKI_ENABLE_UPLOADS') == '1') {
@@ -218,9 +219,13 @@ wfLoadExtension('MobileFrontend');
 $wgMFAutodetectMobileView = true;
 $wgMFDefaultSkinClass = 'SkinMinerva';
 
-# Chameleon Skin
-wfLoadSkin('chameleon');
-$wgDefaultSkin = 'chameleon';
+# Lingo extension
+wfLoadExtension('Lingo');
+
+# Comments extensions
+wfLoadExtension('Comments');
+
+$wgNamespacesWithSubpages[NS_MAIN] = true;
 
 # Load extra settings
 require 'ExtraLocalSettings.php';

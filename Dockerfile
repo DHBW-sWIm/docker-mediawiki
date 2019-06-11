@@ -111,6 +111,9 @@ RUN curl -s -o /tmp/extension-usermerge.tar.gz https://extdist.wmflabs.org/dist/
 # MobileFrontend extension
 RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-extensions-MobileFrontend.git /var/www/mediawiki/extensions/MobileFrontend
 
+# Comments extension
+RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-extensions-Comments.git /var/www/mediawiki/extensions/Comments
+
 # MinervaNeue skin
 RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-skins-MinervaNeue.git /var/www/mediawiki/skins/MinervaNeue
 
@@ -118,7 +121,7 @@ RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https:
 WORKDIR /var/www/mediawiki
 
 # Install composer dependencies
-RUN composer update "mediawiki/chameleon-skin"
+RUN composer update "mediawiki/lingo"
 
 # Copy docker entry point script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
@@ -126,6 +129,9 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 # Copy install and update script
 RUN mkdir /script
 COPY script/* /script/
+
+# Execute update script
+RUN /script/update.sh
 
 # General setup
 VOLUME ["/var/cache/nginx", "/data", "/images"]
