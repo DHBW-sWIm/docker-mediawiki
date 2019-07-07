@@ -1,6 +1,9 @@
 FROM php:7.0-fpm
 MAINTAINER Kristoph Junge <kristoph.junge@gmail.com>
 
+RUN mkdir ~/.gnupg
+RUN echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
+
 # Change UID and GID of www-data user to match host privileges
 RUN usermod -u 999 www-data && \
     groupmod -g 999 www-data
@@ -66,10 +69,10 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
 
 # Parsoid
 RUN useradd parsoid --no-create-home --home-dir /usr/lib/parsoid --shell /usr/sbin/nologin
-RUN apt-key advanced --keyserver keys.gnupg.net --recv-keys 90E9F83F22250DD7 && \
+RUN apt-key advanced --keyserver pgp.mit.edu --recv-keys 90E9F83F22250DD7 && \
     echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /etc/apt/sources.list.d/parsoid.list && \
     apt-get update && \
-    apt-get -y install parsoid --no-install-recommends
+    apt-get -y install parsoid --no-install-recommends --allow-unauthenticated
 COPY config/parsoid/config.yaml /usr/lib/parsoid/src/config.yaml
 ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
 
@@ -113,6 +116,9 @@ RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https:
 
 # Comments extension
 RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-extensions-Comments.git /var/www/mediawiki/extensions/Comments
+
+# CrossReference extension
+RUN git clone https://github.com/staspika/mediawiki-crossreference.git /var/www/mediawiki/extensions/CrossReference
 
 # MinervaNeue skin
 RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-skins-MinervaNeue.git /var/www/mediawiki/skins/MinervaNeue

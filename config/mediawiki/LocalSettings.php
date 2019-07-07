@@ -225,6 +225,9 @@ wfLoadExtension('Lingo');
 # Comments extensions
 wfLoadExtension('Comments');
 
+# CrossReference extension
+wfLoadExtension('CrossReference');
+
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 
 # Load extra settings
