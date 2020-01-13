@@ -1,5 +1,5 @@
 FROM php:7.0-fpm
-MAINTAINER Kristoph Junge <kristoph.junge@gmail.com>
+MAINTAINER SWIM <kwebmaster@swimdhbw.de>
 
 RUN mkdir ~/.gnupg
 RUN echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
