@@ -69,10 +69,10 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
 
 # Parsoid
 RUN useradd parsoid --no-create-home --home-dir /usr/lib/parsoid --shell /usr/sbin/nologin
-RUN apt-key advanced --keyserver pgp.mit.edu --recv-keys AF380A3036A03444 && \
+RUN apt-key advanced --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys AF380A3036A03444 && \
     echo "deb https://releases.wikimedia.org/debian jessie-mediawiki main" > /etc/apt/sources.list.d/parsoid.list && \
     apt-get update && \
-    apt-get -y install parsoid --no-install-recommends --allow-unauthenticated \
+    apt-get -y install parsoid --no-install-recommends --allow-unauthenticated && \
     apt-get -y install mysql-client
 COPY config/parsoid/config.yaml /usr/lib/parsoid/src/config.yaml
 ENV NODE_PATH /usr/lib/parsoid/node_modules:/usr/lib/parsoid/src
