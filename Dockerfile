@@ -143,6 +143,9 @@ RUN mkdir /backup
 COPY script/* /script/
 COPY script/mediawiki_backup.sh /etc/cron.daily/
 
+# Copy SWIM wiki logo
+COPY wiki.png /var/www/mediawiki/resources/assets/wiki.png
+
 # Execute update script
 RUN /script/update.sh
 RUN composer install
