@@ -228,6 +228,41 @@ wfLoadExtension('Comments');
 # CrossReference extension
 wfLoadExtension('CrossReference');
 
+# OAuth2 extension
+if (getenv('MEDIAWIKI_OAUTH2') != '') {
+    wfLoadExtension('MW-OAuth2Client');
+    $wgWhitelistRead = ['Special:OAuth2Client', 'Special:OAuth2Client/redirect'];
+
+    $wgOAuth2Client['client']['id']     = getenv('MEDIAWIKI_OAUTH2_ID');
+    $wgOAuth2Client['client']['secret'] = getenv('MEDIAWIKI_OAUTH2_SECRET');
+
+    $wgOAuth2Client['configuration']['authorize_endpoint']     = getenv('MEDIAWIKI_OAUTH2_AUTH_ENDPOINT'); // Authorization URL
+    $wgOAuth2Client['configuration']['access_token_endpoint']  = getenv('MEDIAWIKI_OAUTH2_TOKEN_ENDPOINT'); // Token URL
+    $wgOAuth2Client['configuration']['api_endpoint']           = getenv('MEDIAWIKI_OAUTH2_API_ENDPOINT'); // URL to fetch user JSON
+    $wgOAuth2Client['configuration']['redirect_uri']           = getenv('MEDIAWIKI_OAUTH2_REDIRECT_URI'); // URL for OAuth2 server to redirect to
+
+    if (getenv('MEDIAWIKI_OAUTH2_PATH_USER') != '') {
+        $wgOAuth2Client['configuration']['username'] = getenv('MEDIAWIKI_OAUTH2_PATH_USER'); // JSON path to username
+    }
+    else {
+        $wgOAuth2Client['configuration']['username'] = 'username'; // JSON path to username
+    }
+
+    if (getenv('MEDIAWIKI_OAUTH2_PATH_EMAIL') != '') {
+        $wgOAuth2Client['configuration']['username'] = getenv('MEDIAWIKI_OAUTH2_PATH_USER'); // JSON path to username
+    }
+    else {
+        $wgOAuth2Client['configuration']['username'] = 'email'; // JSON path to username
+    }
+
+    if (getenv('MEDIAWIKI_OAUTH2_SCOPES') != '') {
+        $wgOAuth2Client['configuration']['scopes'] = getenv('MEDIAWIKI_OAUTH2_SCOPES'); // Permissions
+    }
+    else {
+        $wgOAuth2Client['configuration']['scopes'] = 'openid email profile'; // Permissions
+    }
+}
+
 $wgNamespacesWithSubpages[NS_MAIN] = true;
 
 # Load extra settings

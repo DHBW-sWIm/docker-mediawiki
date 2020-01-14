@@ -121,6 +121,10 @@ RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https:
 # CrossReference extension
 RUN git clone https://github.com/staspika/mediawiki-crossreference.git /var/www/mediawiki/extensions/CrossReference
 
+# OAuth2 extension
+RUN git clone https://github.com/Schine/MW-OAuth2Client.git /var/www/mediawiki/extensions/MW-OAuth2Client
+RUN cd /var/www/mediawiki/extensions/MW-OAuth2Client && git submodule update --init && cd vendors/oauth2-client && ls && composer install
+
 # MinervaNeue skin
 RUN git clone -b REL${MEDIAWIKI_VERSION_MAJOR}_${MEDIAWIKI_VERSION_MINOR} https://github.com/wikimedia/mediawiki-skins-MinervaNeue.git /var/www/mediawiki/skins/MinervaNeue
 
@@ -141,6 +145,7 @@ COPY script/mediawiki_backup.sh /etc/cron.daily/
 
 # Execute update script
 RUN /script/update.sh
+RUN composer install
 
 # General setup
 VOLUME ["/var/cache/nginx", "/data", "/images"]
